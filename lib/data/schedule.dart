@@ -1,10 +1,14 @@
 import 'dart:collection';
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:sleepscheduler/data/sharedpref.dart';
 import 'package:sleepscheduler/data/sleep.dart';
 
 class Schedule extends ChangeNotifier {
-  final List<Sleep> _sleepCycles = [];
+  List<Sleep> _sleepCycles = [];
+
+  Schedule();
 
   UnmodifiableListView<Sleep> get sleepCycles =>
       UnmodifiableListView(_sleepCycles);
@@ -15,4 +19,16 @@ class Schedule extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  void addAll(List<Sleep> sleepCycles) {
+    _sleepCycles.addAll(sleepCycles);
+    notifyListeners();
+  }
+
+  Schedule.fromJson(Map<String, dynamic> json)
+      : _sleepCycles = (jsonDecode(json['sleepcycles']) as List)
+            .map((e) => Sleep.fromJson(e))
+            .toList();
+
+  Map<String, dynamic> toJson() => {'sleepcycles': jsonEncode(_sleepCycles)};
 }

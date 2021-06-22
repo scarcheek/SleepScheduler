@@ -4,6 +4,7 @@ import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sleepscheduler/data/schedule.dart';
+import 'package:sleepscheduler/data/sharedpref.dart';
 import 'package:sleepscheduler/data/sleep.dart';
 import 'package:sleepscheduler/widgets/sleep_pie.dart';
 
@@ -38,7 +39,7 @@ class _HomeState extends State<Home> {
   void _createNewSector(BuildContext context, Schedule schedule) async {
     TimeOfDay? startTime = await showTimePicker(
         context: context, initialTime: TimeOfDay.now().replacing(minute: 30));
-
+    if (startTime == null) return;
     TimeOfDay? duration = await showTimePicker(
       context: context,
       initialTime: TimeOfDay(hour: 0, minute: 0),
@@ -51,8 +52,11 @@ class _HomeState extends State<Home> {
         );
       },
     );
+    if (duration == null) return;
 
-    schedule.add(Sleep(startTime!, duration!));
+    schedule.add(Sleep(startTime, duration));
+
+    SharedPref().save('schedule', schedule);
   }
 
   @override

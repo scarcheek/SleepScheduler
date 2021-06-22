@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sleepscheduler/data/schedule.dart';
+import 'package:sleepscheduler/data/sharedpref.dart';
 import 'package:sleepscheduler/pages/home.dart';
 
 void main() {
@@ -55,17 +57,19 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  Schedule _schedule = Schedule();
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  @override
+  void initState() {
+    super.initState();
+
+    initSchedule();
+  }
+
+  void initSchedule() async {
+    Schedule newSchedule =
+        Schedule.fromJson(await SharedPref().read('schedule'));
+    _schedule.addAll(newSchedule.sleepCycles);
   }
 
   @override
@@ -85,8 +89,9 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             children: <Widget>[
               ChangeNotifierProvider(
-                create: (context) => Schedule(),
+                create: (context) => _schedule,
                 child: Home(),
+                lazy: true,
               )
             ],
           ),
