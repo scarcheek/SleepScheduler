@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_picker/flutter_picker.dart';
 import 'package:sleepscheduler/widgets/sleep_pie.dart';
 
 class Scheduler extends StatefulWidget {
@@ -29,6 +30,36 @@ class _SchedulerState extends State<Scheduler> {
     });
   }
 
+  void _createNewSector(BuildContext context) async {
+    TimeOfDay? startTime = await showTimePicker(
+        context: context, initialTime: TimeOfDay(hour: 0, minute: 0));
+
+    Picker(
+      adapter: NumberPickerAdapter(data: <NumberPickerColumn>[
+        const NumberPickerColumn(begin: 0, end: 24),
+        const NumberPickerColumn(begin: 0, end: 60, jump: 5),
+      ]),
+      delimiter: <PickerDelimiter>[
+        PickerDelimiter(
+          child: Container(
+              width: 30.0, alignment: Alignment.center, child: Text(":")),
+        )
+      ],
+      hideHeader: true,
+      confirmText: 'OK',
+      confirmTextStyle:
+          TextStyle(inherit: false, color: Colors.red, fontSize: 22),
+      selectedTextStyle: TextStyle(color: Colors.blue),
+      onConfirm: (Picker picker, List<int> value) {
+        // You get your duration here
+
+        Duration _duration = Duration(
+            hours: picker.getSelectedValues()[0],
+            minutes: picker.getSelectedValues()[1]);
+      },
+    ).showDialog(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -40,7 +71,9 @@ class _SchedulerState extends State<Scheduler> {
     return Column(children: [
       Row(mainAxisAlignment: MainAxisAlignment.end, children: [
         IconButton(
-          onPressed: _incrementCounter,
+          onPressed: () {
+            _createNewSector(context);
+          },
           icon: Icon(Icons.add),
           splashRadius: 20,
         ),
