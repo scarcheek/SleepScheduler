@@ -14,7 +14,7 @@ class _DateTimeHeaderState extends State<DateTimeHeader> {
   DateTime _currDate = DateTime.now();
   
   _DateTimeHeaderState() {
-    Timer.periodic(Duration(minutes: 1), (timer) => setState(() {
+    Timer.periodic(Duration(seconds: 10), (timer) => setState(() {
       _currTime = TimeOfDay.now();
       _currDate = DateTime.now();
     }));

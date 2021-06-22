@@ -16,12 +16,9 @@ class SleepPie extends StatefulWidget {
 
 class _SleepPieState extends State<SleepPie> {
   final double rotateBy =
-      2 * pi / 1440; //the value the pie chart gets rotated by each tick
+      2 * pi / 1440; // the value the pie chart gets rotated by each tick
   late Schedule _schedule;
-
-// the initial value of the rotation is set by the currenttime
-  double rotation = -pi / 2 -
-      (TimeOfDay.now().hour * 60 + TimeOfDay.now().minute) * 2 * pi / 1440;
+  double rotation = 0;
 
   void handleTimeChange(Timer t) {
     print(t);
@@ -53,38 +50,57 @@ class _SleepPieState extends State<SleepPie> {
 
   @override
   Widget build(BuildContext context) {
-    List<PieChartSectionData> pieData = [];
+    List<PieChartSectionData> pieSectors = [];
 
-    double handledTimeInSeconds = 0;
-    for (var sleep in _schedule.sleepCycles) {
-      // Add the awake time between the last sleep and the current sleep
-      pieData.add(PieChartSectionData(
-          value: sleep.start - handledTimeInSeconds,
-          color: Color(0xFF3F348B),
-          radius: 80,
-          showTitle: true));
+    double accSectorTime = 0;
+    double firstSleepRotationOffset = 0;
+    for (var idx = 0; idx < _schedule.sleepCycles.length; idx++) {
+      var sleep = _schedule.sleepCycles[idx];
 
-      // Add the sleep itself
-      pieData.add(PieChartSectionData(
-          value: sleep.duration,
+      // not the first sleep
+      if (idx > 0) {
+        // add the awake time between the current and the previous sleep
+        pieSectors.add(PieChartSectionData(
+          value: sleep.start - accSectorTime,
           color: Color(0xFF4949B1),
           radius: 80,
-          showTitle: false));
+          showTitle: false,
+        ));
+      }
 
-      handledTimeInSeconds = sleep.start + sleep.duration;
+      // add the sleep
+      pieSectors.add(PieChartSectionData(
+        value: sleep.duration,
+        color: Color(0xFF3F348B),
+        radius: 80,
+        showTitle: false,
+      ));
+
+      accSectorTime = sleep.start + sleep.duration;
     }
 
-    if (handledTimeInSeconds < 24 * 60 /* minutes */) {
-      pieData.add(PieChartSectionData(
-          value: 24 * 60 /* minutes */ - handledTimeInSeconds,
-          color: Color(0xFF3F348B),
-          radius: 80,
-          showTitle: false));
+    var firstSleepStart = (_schedule.sleepCycles.length > 0) ? _schedule.sleepCycles[0].start : 0;
+
+    if (accSectorTime < 24 * 60 /* minutes */ || firstSleepStart != 0) {
+      // add the awake time between the last and the first sleep
+      pieSectors.add(PieChartSectionData(
+        value: 24 * 60 /* minutes */ - accSectorTime + firstSleepStart,
+        color: Color(0xFF4949B1),
+        radius: 80,
+        showTitle: false,
+      ));
+
+      firstSleepRotationOffset = firstSleepStart * rotateBy;
     }
+
+    rotation = -pi / 2; // rotates the pie to have 00:00 at the top
+    rotation += firstSleepRotationOffset;
+    // rotate to the current time
+    rotation -= (TimeOfDay.now().hour * 60 + TimeOfDay.now().minute) * 2 * pi / 1440;
 
     return Column(children: [
       Text(
-        '${currentTime.hour}:${currentTime.minute}',
+        '${currentTime.hour.toString().padLeft(2, '0')}:${currentTime.minute.toString().padLeft(2, '0')}',
         style: TextStyle(color: Color(0xFF4949B1), fontSize: 20),
       ),
       Icon(
@@ -102,7 +118,7 @@ class _SleepPieState extends State<SleepPie> {
                   show: false,
                 ),
                 centerSpaceRadius: 30,
-                sections: pieData,
+                sections: pieSectors,
                 sectionsSpace: 3),
           ),
         ),
