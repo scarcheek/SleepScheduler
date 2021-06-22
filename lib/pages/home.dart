@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sleepscheduler/data/schedule.dart';
+import 'package:sleepscheduler/data/sharedpref.dart';
 import 'package:sleepscheduler/data/sleep.dart';
 import 'package:sleepscheduler/widgets/date_time_header.dart';
 import 'package:sleepscheduler/widgets/sleep_pie.dart';
@@ -35,6 +36,8 @@ class _HomeState extends State<Home> {
     if (duration == null) return /* action canceled */;
 
     schedule.add(Sleep(startTime, duration));
+
+    SharedPref().save('schedule', schedule);
   }
 
   @override

@@ -2,7 +2,6 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:sleepscheduler/data/sharedpref.dart';
 import 'package:sleepscheduler/data/sleep.dart';
 
 class Schedule extends ChangeNotifier {

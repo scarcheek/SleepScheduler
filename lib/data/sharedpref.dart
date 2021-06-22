@@ -12,10 +12,16 @@ class SharedPref {
   save(String key, value) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString(key, json.encode(value));
+    print("lmao");
   }
 
   remove(String key) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.remove(key);
+  }
+
+  clear() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear();
   }
 }
