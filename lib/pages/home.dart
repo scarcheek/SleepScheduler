@@ -2,9 +2,12 @@ import 'dart:async';
 
 import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sleepscheduler/data/schedule.dart';
+import 'package:sleepscheduler/data/sleep.dart';
 import 'package:sleepscheduler/widgets/sleep_pie.dart';
 
-class Scheduler extends StatefulWidget {
+class Home extends StatefulWidget {
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
@@ -15,10 +18,10 @@ class Scheduler extends StatefulWidget {
   // always marked "final".
 
   @override
-  _SchedulerState createState() => _SchedulerState();
+  _HomeState createState() => _HomeState();
 }
 
-class _SchedulerState extends State<Scheduler> {
+class _HomeState extends State<Home> {
   int _counter = 0;
 
   void _incrementCounter() {
@@ -32,7 +35,7 @@ class _SchedulerState extends State<Scheduler> {
     });
   }
 
-  void _createNewSector(BuildContext context) async {
+  void _createNewSector(BuildContext context, Schedule schedule) async {
     TimeOfDay? startTime = await showTimePicker(
         context: context, initialTime: TimeOfDay.now().replacing(minute: 30));
 
@@ -48,6 +51,8 @@ class _SchedulerState extends State<Scheduler> {
         );
       },
     );
+
+    schedule.add(Sleep(startTime!, duration!));
   }
 
   @override
@@ -58,30 +63,34 @@ class _SchedulerState extends State<Scheduler> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return Column(children: [
-      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-        IconButton(
-          onPressed: () {
-            _createNewSector(context);
-          },
-          icon: Icon(Icons.add),
-          splashRadius: 20,
-        ),
-      ]),
-      SleepPie(),
-      Text(
-        'You have pushed the button this many times:',
+    return Consumer<Schedule>(
+      builder: (context, schedule, child) => Column(
+        children: [
+          Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+            IconButton(
+              onPressed: () {
+                _createNewSector(context, schedule);
+              },
+              icon: Icon(Icons.add),
+              splashRadius: 20,
+            ),
+          ]),
+          SleepPie(schedule: schedule),
+          Text(
+            'You have pushed the button this many times:',
+          ),
+          Text(
+            '$_counter',
+            style: Theme.of(context).textTheme.headline4,
+          ),
+          Divider(
+            endIndent: 10,
+            indent: 10,
+            thickness: 0.5,
+            color: Color(0xFF5757a1),
+          ),
+        ],
       ),
-      Text(
-        '$_counter',
-        style: Theme.of(context).textTheme.headline4,
-      ),
-      Divider(
-        endIndent: 10,
-        indent: 10,
-        thickness: 0.5,
-        color: Color(0xFF5757a1),
-      )
-    ]);
+    );
   }
 }
