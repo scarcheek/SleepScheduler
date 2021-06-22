@@ -22,6 +22,19 @@ class App extends StatelessWidget {
         iconTheme: IconThemeData(
           color: Color(0xFF7A7AD3),
         ),
+        timePickerTheme: TimePickerThemeData(
+            backgroundColor: Color(0xFF404082),
+            dialHandColor: Color(0xFF3B3BCD),
+            dayPeriodColor: Color(0xFF7A7AD3),
+            hourMinuteColor: Color(0xFF7A7AD3),
+            dayPeriodTextColor: Colors.black,
+            hourMinuteTextColor: Colors.black,
+            dialBackgroundColor: Color(0xFF7A7AD3),
+            dayPeriodBorderSide: BorderSide(
+              width: 0,
+              color: Color(0xFF404082),
+            ),
+            helpTextStyle: TextStyle(color: Color(0xFF7A7AD3))),
       ),
       home: MyHomePage(),
     );
