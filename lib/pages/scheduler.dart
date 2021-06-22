@@ -1,5 +1,7 @@
+import 'dart:async';
+
+import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_picker/flutter_picker.dart';
 import 'package:sleepscheduler/widgets/sleep_pie.dart';
 
 class Scheduler extends StatefulWidget {
@@ -32,32 +34,20 @@ class _SchedulerState extends State<Scheduler> {
 
   void _createNewSector(BuildContext context) async {
     TimeOfDay? startTime = await showTimePicker(
-        context: context, initialTime: TimeOfDay(hour: 0, minute: 0));
+        context: context, initialTime: TimeOfDay.now().replacing(minute: 30));
 
-    Picker(
-      adapter: NumberPickerAdapter(data: <NumberPickerColumn>[
-        const NumberPickerColumn(begin: 0, end: 24),
-        const NumberPickerColumn(begin: 0, end: 60, jump: 5),
-      ]),
-      delimiter: <PickerDelimiter>[
-        PickerDelimiter(
-          child: Container(
-              width: 30.0, alignment: Alignment.center, child: Text(":")),
-        )
-      ],
-      hideHeader: true,
-      confirmText: 'OK',
-      confirmTextStyle:
-          TextStyle(inherit: false, color: Colors.red, fontSize: 22),
-      selectedTextStyle: TextStyle(color: Colors.blue),
-      onConfirm: (Picker picker, List<int> value) {
-        // You get your duration here
-
-        Duration _duration = Duration(
-            hours: picker.getSelectedValues()[0],
-            minutes: picker.getSelectedValues()[1]);
+    TimeOfDay? duration = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(hour: 0, minute: 0),
+      initialEntryMode: TimePickerEntryMode.input,
+      helpText: "Select Duration",
+      builder: (BuildContext context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child!,
+        );
       },
-    ).showDialog(context);
+    );
   }
 
   @override

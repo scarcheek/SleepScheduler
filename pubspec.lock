@@ -50,6 +50,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
+  day_night_time_picker:
+    dependency: "direct main"
+    description:
+      name: day_night_time_picker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
   equatable:
     dependency: transitive
     description:
@@ -76,15 +83,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_picker:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: HEAD
-      resolved-ref: f006c881310f7cfdce3c9f5ddd476fb3a073c453
-      url: "git://github.com/yangyxd/flutter_picker.git"
-    source: git
-    version: "2.0.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -181,4 +179,3 @@ packages:
     version: "2.1.0"
 sdks:
   dart: ">=2.12.0 <3.0.0"
-  flutter: ">=1.17.0"
