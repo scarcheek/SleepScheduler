@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sleepscheduler/widgets/sleep_pie.dart';
 
 class Scheduler extends StatefulWidget {
   // This widget is the home page of your application. It is stateful, meaning
@@ -44,6 +45,7 @@ class _SchedulerState extends State<Scheduler> {
           splashRadius: 20,
         ),
       ]),
+      SleepPie(),
       Text(
         'You have pushed the button this many times:',
       ),
@@ -51,6 +53,12 @@ class _SchedulerState extends State<Scheduler> {
         '$_counter',
         style: Theme.of(context).textTheme.headline4,
       ),
+      Divider(
+        endIndent: 10,
+        indent: 10,
+        thickness: 0.5,
+        color: Color(0xFF5757a1),
+      )
     ]);
   }
 }
