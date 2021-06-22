@@ -23,21 +23,29 @@ class _SleepPieState extends State<SleepPie> {
   double rotation = -pi / 2 -
       (TimeOfDay.now().hour * 60 + TimeOfDay.now().minute) * 2 * pi / 1440;
 
-  void handleTick(Timer t) {
+  void handleTimeChange(Timer t) {
     print(t);
     setState(() {
-      rotation = rotation - t.tick * rotateBy;
-      currentTime = currentTime.replacing(minute: currentTime.minute + 1);
+      currentTime = TimeOfDay.now();
+    });
+  }
+
+  void handleTurn(Timer t) {
+    print(t);
+    setState(() {
+      rotation = rotation - rotateBy;
     });
   }
 
   TimeOfDay currentTime = TimeOfDay.now();
 
-  late Timer timer;
+  late Timer turnTimer;
+  late Timer timeTimer;
   @override
   void initState() {
     super.initState();
-    timer = Timer.periodic(Duration(minutes: 1), handleTick);
+    turnTimer = Timer.periodic(Duration(minutes: 1), handleTurn);
+    timeTimer = Timer.periodic(Duration(seconds: 1), handleTimeChange);
   }
 
   //constructor
@@ -54,7 +62,7 @@ class _SleepPieState extends State<SleepPie> {
           value: sleep.start - handledTimeInSeconds,
           color: Color(0xFF3F348B),
           radius: 80,
-          showTitle: false));
+          showTitle: true));
 
       // Add the sleep itself
       pieData.add(PieChartSectionData(
