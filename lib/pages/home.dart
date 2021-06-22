@@ -1,9 +1,8 @@
-import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sleepscheduler/data/schedule.dart';
-import 'package:sleepscheduler/data/sharedpref.dart';
 import 'package:sleepscheduler/data/sleep.dart';
+import 'package:sleepscheduler/widgets/date_time_header.dart';
 import 'package:sleepscheduler/widgets/sleep_pie.dart';
 
 class Home extends StatefulWidget {
@@ -32,9 +31,6 @@ class _HomeState extends State<Home> {
         );
       },
     );
-    if (duration == null) return;
-
-    schedule.add(Sleep(startTime, duration));
 
     if (duration == null) return /* action canceled */;
 
@@ -55,6 +51,7 @@ class _HomeState extends State<Home> {
               splashRadius: 20,
             ),
           ]),
+          DateTimeHeader(),
           SleepPie(schedule: schedule),
           Text(
             'You have pushed the button too many times:',
