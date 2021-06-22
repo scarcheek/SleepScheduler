@@ -11,7 +11,7 @@ class Schedule extends ChangeNotifier {
 
   void add(Sleep sleep) {
     _sleepCycles.add(sleep);
-    _sleepCycles.sort((a, b) => ((a.start) - (b.start)).toInt());
+    _sleepCycles.sort((a, b) => (a.start - b.start).toInt());
 
     notifyListeners();
   }

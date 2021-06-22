@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 class Sleep {
   late double start;
-
   late double duration;
 
   Sleep(TimeOfDay start, TimeOfDay duration) {

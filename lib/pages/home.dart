@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,36 +6,18 @@ import 'package:sleepscheduler/data/sleep.dart';
 import 'package:sleepscheduler/widgets/sleep_pie.dart';
 
 class Home extends StatefulWidget {
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
   void _createNewSector(BuildContext context, Schedule schedule) async {
     TimeOfDay? startTime = await showTimePicker(
-        context: context, initialTime: TimeOfDay.now().replacing(minute: 30));
+      context: context, 
+      initialTime: TimeOfDay.now().replacing(minute: 30),
+    );
+
+    if (startTime == null) return /* action canceled */;
 
     TimeOfDay? duration = await showTimePicker(
       context: context,
@@ -52,17 +32,13 @@ class _HomeState extends State<Home> {
       },
     );
 
-    schedule.add(Sleep(startTime!, duration!));
+    if (duration == null) return /* action canceled */;
+
+    schedule.add(Sleep(startTime, duration));
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Consumer<Schedule>(
       builder: (context, schedule, child) => Column(
         children: [
@@ -77,11 +53,11 @@ class _HomeState extends State<Home> {
           ]),
           SleepPie(schedule: schedule),
           Text(
-            'You have pushed the button this many times:',
+            'You have pushed the button too many times:',
           ),
           Text(
-            '$_counter',
-            style: Theme.of(context).textTheme.headline4,
+            'You broke the counter >:/',
+            style: Theme.of(context).textTheme.headline5,
           ),
           Divider(
             endIndent: 10,
