@@ -25,6 +25,11 @@ class Schedule extends ChangeNotifier {
     notifyListeners();
   }
 
+  void remove(Sleep sleep) {
+    _sleepCycles.remove(sleep);
+    notifyListeners();
+  }
+
   Schedule.fromJson(Map<String, dynamic> json)
       : _sleepCycles = (jsonDecode(json['sleepcycles']) as List)
             .map((e) => Sleep.fromJson(e))

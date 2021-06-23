@@ -72,13 +72,12 @@ class _HomeState extends State<Home> {
         children: [
           Row(mainAxisAlignment: MainAxisAlignment.end, children: [
             IconButton(
-              onPressed: () {
-                _createNewSector(context, schedule);
-              },
-              icon: Icon(Icons.add),
-              splashRadius: 20,
-              color: Theme.of(context).colorScheme.primary
-            ),
+                onPressed: () {
+                  _createNewSector(context, schedule);
+                },
+                icon: Icon(Icons.add),
+                splashRadius: 20,
+                color: Theme.of(context).colorScheme.primary),
           ]),
           DateTimeHeader(),
           SleepPie(schedule: schedule),

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sleepscheduler/data/schedule.dart';
+import 'package:sleepscheduler/data/sharedpref.dart';
+import 'package:sleepscheduler/data/sleep.dart';
+import 'package:sleepscheduler/widgets/snackbar_handler.dart';
 
 import 'upcoming_sleep.dart';
 
@@ -16,12 +19,25 @@ class _UpcomingState extends State<Upcoming> {
   late Schedule schedule;
   _UpcomingState(this.schedule);
 
+  void onDelete(Sleep sleep) {
+    SnackbarHandler().showSnackbar(
+        context, "Deleting ${sleep.startTime.toString()}", SnackbarType.info);
+    schedule.remove(sleep);
+
+    SharedPref().save('schedule', schedule);
+  }
+
+  void onEdit(Sleep sleep) {
+    //TODO: create view for editing a sleep
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(children: [
       Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-        Padding(padding: EdgeInsets.symmetric(horizontal: 10), child:
-          Text(
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Text(
             'Upcoming',
             style: Theme.of(context).textTheme.headline2,
           ),
@@ -33,7 +49,16 @@ class _UpcomingState extends State<Upcoming> {
         thickness: 0.5,
         color: Theme.of(context).colorScheme.onPrimary,
       ),
-      ...schedule.sleepCycles.map((sleep) => UpcomingSleep(sleep: sleep))
+      Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Column(children: [
+            ...schedule.sleepCycles.map((sleep) => UpcomingSleep(
+                  key: Key(sleep.hashCode.toString()),
+                  sleep: sleep,
+                  onDelete: onDelete,
+                  onEdit: onEdit,
+                ))
+          ]))
     ]);
   }
 }
