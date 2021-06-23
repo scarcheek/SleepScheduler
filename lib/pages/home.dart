@@ -5,6 +5,7 @@ import 'package:sleepscheduler/data/sharedpref.dart';
 import 'package:sleepscheduler/data/sleep.dart';
 import 'package:sleepscheduler/widgets/date_time_header.dart';
 import 'package:sleepscheduler/widgets/sleep_pie.dart';
+import 'package:sleepscheduler/widgets/snackbar_handler.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -35,9 +36,30 @@ class _HomeState extends State<Home> {
 
     //TODO: moch a rückmeldung oder so
     if (duration == null || duration.hour * 60 + duration.minute <= 0)
-      return /* action canceled */;
+      return SnackbarHandler().showSnackbar(
+          context,
+          "Scheduling a sleep with a duration of 0 doesn't make any sense.",
+          SnackbarType.error) /* action canceled */;
 
-    schedule.add(Sleep(startTime, duration));
+    //Checks whether the new sleep overlaps with any preexisting sleeps
+    Sleep sleep = Sleep(startTime, duration);
+    if (schedule.sleepCycles.any((element) {
+      if (element.start == sleep.start) return true;
+
+      if ((element.start + element.duration) % 1440 > sleep.start &&
+          element.start < sleep.start) return true;
+
+      if ((sleep.start + sleep.duration) % 1440 > element.start &&
+          sleep.start < element.start) return true;
+
+      return false;
+    }))
+      return SnackbarHandler().showSnackbar(
+          context,
+          "You are not allowed to sleep at that time",
+          SnackbarType.error); //TODO: Rückmeldung
+
+    schedule.add(sleep);
 
     SharedPref().save('schedule', schedule);
   }
