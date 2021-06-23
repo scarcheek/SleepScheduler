@@ -24,7 +24,7 @@ class _HomeState extends State<Home> {
       context: context,
       initialTime: TimeOfDay(hour: 0, minute: 0),
       initialEntryMode: TimePickerEntryMode.input,
-      helpText: "Select Duration",
+      helpText: "Select Duration".toUpperCase(),
       builder: (BuildContext context, Widget? child) {
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
