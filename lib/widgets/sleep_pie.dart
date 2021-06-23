@@ -15,8 +15,9 @@ class SleepPie extends StatefulWidget {
 }
 
 class _SleepPieState extends State<SleepPie> {
-  final double rotateBy =
-      2 * pi / 1440; // the value the pie chart gets rotated by each tick
+  static int minsPerDay = 24 * 60;
+  static double rotationPerMin = 360 / minsPerDay;
+
   late Schedule _schedule;
   double rotation = 0;
 
@@ -30,7 +31,7 @@ class _SleepPieState extends State<SleepPie> {
   void handleTurn(Timer t) {
     print(t);
     setState(() {
-      rotation = rotation - rotateBy;
+      rotation = (360 + rotation - rotationPerMin) % 360;
     });
   }
 
@@ -90,13 +91,13 @@ class _SleepPieState extends State<SleepPie> {
         showTitle: false,
       ));
 
-      firstSleepRotationOffset = firstSleepStart * rotateBy;
+      firstSleepRotationOffset = firstSleepStart * rotationPerMin;
     }
 
-    rotation = -pi / 2; // rotates the pie to have 00:00 at the top
-    rotation += firstSleepRotationOffset;
+    rotation = 270; // rotates the pie to have 00:00 at the top
+    rotation += firstSleepRotationOffset % 360;
     // rotate to the current time
-    rotation -= (TimeOfDay.now().hour * 60 + TimeOfDay.now().minute) * 2 * pi / 1440;
+    rotation = (360 + rotation - (TimeOfDay.now().hour * 60 + TimeOfDay.now().minute) * rotationPerMin) % 360;
 
     return Column(children: [
       Stack(
@@ -107,7 +108,7 @@ class _SleepPieState extends State<SleepPie> {
             style: Theme.of(context).textTheme.headline3,
           ),
           Padding(
-            padding: EdgeInsets.only(top: Theme.of(context).textTheme.headline3!.fontSize! * 0.7),
+            padding: EdgeInsets.only(top: Theme.of(context).textTheme.headline3!.fontSize! * 0.75),
             child: Icon(
               Icons.arrow_drop_down,
               size: 28,
@@ -117,18 +118,17 @@ class _SleepPieState extends State<SleepPie> {
         ],
       ),
       Container(
-        height: 240,
+        height: 250,
         padding: EdgeInsets.only(bottom: 25),
-        child: Transform.rotate(
-          angle: rotation, // rotates the pie to start at the top
-          child: PieChart(
-            PieChartData(
-                borderData: FlBorderData(
-                  show: false,
-                ),
-                centerSpaceRadius: 30,
-                sections: pieSectors,
-                sectionsSpace: 3),
+        child: PieChart(
+          PieChartData(
+            borderData: FlBorderData(
+              show: false,
+            ),
+            centerSpaceRadius: 30,
+            sections: pieSectors,
+            sectionsSpace: 3,
+            startDegreeOffset: rotation,
           ),
         ),
       ),
