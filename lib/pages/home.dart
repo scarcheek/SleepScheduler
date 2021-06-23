@@ -6,6 +6,7 @@ import 'package:sleepscheduler/data/sleep.dart';
 import 'package:sleepscheduler/widgets/date_time_header.dart';
 import 'package:sleepscheduler/widgets/sleep_pie.dart';
 import 'package:sleepscheduler/widgets/snackbar_handler.dart';
+import 'package:sleepscheduler/widgets/upcoming.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -76,23 +77,12 @@ class _HomeState extends State<Home> {
               },
               icon: Icon(Icons.add),
               splashRadius: 20,
+              color: Theme.of(context).colorScheme.primary
             ),
           ]),
           DateTimeHeader(),
           SleepPie(schedule: schedule),
-          Text(
-            'You have pushed the button too many times:',
-          ),
-          Text(
-            'You broke the counter >:/',
-            style: Theme.of(context).textTheme.headline5,
-          ),
-          Divider(
-            endIndent: 10,
-            indent: 10,
-            thickness: 0.5,
-            color: Color(0xFF5757a1),
-          ),
+          Upcoming(schedule: schedule),
         ],
       ),
     );

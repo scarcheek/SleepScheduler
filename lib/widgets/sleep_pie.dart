@@ -104,7 +104,7 @@ class _SleepPieState extends State<SleepPie> {
         alignment: Alignment.topCenter,
         children: [
           Text(
-            '${currentTime.hour.toString().padLeft(2, '0')}:${currentTime.minute.toString().padLeft(2, '0')}',
+            currentTime.toString().split(RegExp("[()]"))[1],
             style: Theme.of(context).textTheme.headline3,
           ),
           Padding(
@@ -112,7 +112,6 @@ class _SleepPieState extends State<SleepPie> {
             child: Icon(
               Icons.arrow_drop_down,
               size: 28,
-              color: Theme.of(context).colorScheme.onPrimary,
             ),
           ),
         ],
@@ -127,7 +126,7 @@ class _SleepPieState extends State<SleepPie> {
             ),
             centerSpaceRadius: 30,
             sections: pieSectors,
-            sectionsSpace: 3,
+            sectionsSpace: 2,
             startDegreeOffset: rotation,
           ),
         ),

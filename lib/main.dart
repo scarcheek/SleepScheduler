@@ -41,6 +41,7 @@ class App extends StatelessWidget {
             )
             .merge(TextTheme(
                 headline1: TextStyle(fontSize: 32, letterSpacing: 0.5),
+                headline2: TextStyle(fontSize: 28),
                 headline3: GoogleFonts.montserrat(
                   fontSize: 24,
                   color: Colors.green[300],
@@ -51,7 +52,7 @@ class App extends StatelessWidget {
                   fontWeight: FontWeight.w300,
                 ))),
         iconTheme: IconThemeData(
-          color: Colors.green[300],
+          color: Colors.blueGrey[700],
         ),
         timePickerTheme: TimePickerThemeData(
             helpTextStyle: TextStyle(color: Colors.indigo[300])),
