@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:sleepscheduler/data/sleep.dart';
 import 'package:sleepscheduler/widgets/snackbar_handler.dart';
 
+import 'sharedpref.dart';
+
 class Schedule extends ChangeNotifier {
   List<Sleep> _sleepCycles = [];
 
@@ -17,16 +19,21 @@ class Schedule extends ChangeNotifier {
     _sleepCycles.add(sleep);
     _sleepCycles.sort((a, b) => (a.start - b.start).toInt());
 
-    notifyListeners();
+    save();
   }
 
   void addAll(List<Sleep> sleepCycles) {
     _sleepCycles.addAll(sleepCycles);
-    notifyListeners();
+    save();
   }
 
   void remove(Sleep sleep) {
     _sleepCycles.remove(sleep);
+    save();
+  }
+
+  void save() {
+    SharedPref().save('schedule', this);
     notifyListeners();
   }
 

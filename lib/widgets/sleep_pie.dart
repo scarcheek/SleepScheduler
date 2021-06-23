@@ -22,14 +22,12 @@ class _SleepPieState extends State<SleepPie> {
   double rotation = 0;
 
   void handleTimeChange(Timer t) {
-    print(t);
     setState(() {
       currentTime = TimeOfDay.now();
     });
   }
 
   void handleTurn(Timer t) {
-    print(t);
     setState(() {
       rotation = (360 + rotation - rotationPerMin) % 360;
     });
@@ -104,7 +102,7 @@ class _SleepPieState extends State<SleepPie> {
         alignment: Alignment.topCenter,
         children: [
           Text(
-            currentTime.toString().split(RegExp("[()]"))[1],
+            currentTime.toString().split(RegExp('[()]'))[1],
             style: Theme.of(context).textTheme.headline3,
           ),
           Padding(

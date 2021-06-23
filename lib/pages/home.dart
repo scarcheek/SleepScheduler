@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sleepscheduler/data/schedule.dart';
-import 'package:sleepscheduler/data/sharedpref.dart';
 import 'package:sleepscheduler/data/sleep.dart';
 import 'package:sleepscheduler/widgets/date_time_header.dart';
 import 'package:sleepscheduler/widgets/sleep_pie.dart';
@@ -26,7 +25,7 @@ class _HomeState extends State<Home> {
       context: context,
       initialTime: TimeOfDay(hour: 0, minute: 0),
       initialEntryMode: TimePickerEntryMode.input,
-      helpText: "Select Duration".toUpperCase(),
+      helpText: 'Select Duration'.toUpperCase(),
       builder: (BuildContext context, Widget? child) {
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
@@ -35,14 +34,15 @@ class _HomeState extends State<Home> {
       },
     );
 
-    //TODO: moch a rückmeldung oder so
-    if (duration == null || duration.hour * 60 + duration.minute <= 0)
+    if (duration == null) return /* action canceled */;
+
+    if (duration.hour * 60 + duration.minute <= 0)
       return SnackbarHandler().showSnackbar(
           context,
-          "Scheduling a sleep with a duration of 0 doesn't make any sense.",
-          SnackbarType.error) /* action canceled */;
+          'Scheduling a sleep with a duration of 0 doesn\'t make any sense.',
+          SnackbarType.error);
 
-    //Checks whether the new sleep overlaps with any preexisting sleeps
+    // Checks whether the new sleep overlaps with any preexisting sleeps
     Sleep sleep = Sleep(startTime, duration);
     if (schedule.sleepCycles.any((element) {
       if (element.start == sleep.start) return true;
@@ -57,12 +57,10 @@ class _HomeState extends State<Home> {
     }))
       return SnackbarHandler().showSnackbar(
           context,
-          "You are not allowed to sleep at that time",
-          SnackbarType.error); //TODO: Rückmeldung
+          'You are not allowed to sleep at that time',
+          SnackbarType.error);
 
     schedule.add(sleep);
-
-    SharedPref().save('schedule', schedule);
   }
 
   @override

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sleepscheduler/data/schedule.dart';
-import 'package:sleepscheduler/data/sharedpref.dart';
 import 'package:sleepscheduler/data/sleep.dart';
 import 'package:sleepscheduler/widgets/snackbar_handler.dart';
 
@@ -21,14 +20,12 @@ class _UpcomingState extends State<Upcoming> {
 
   void onDelete(Sleep sleep) {
     SnackbarHandler().showSnackbar(
-        context, "Deleting ${sleep.startTime.toString()}", SnackbarType.info);
+        context, 'Deleting ${sleep.startTime.toString()}', SnackbarType.info);
     schedule.remove(sleep);
-
-    SharedPref().save('schedule', schedule);
   }
 
   void onEdit(Sleep sleep) {
-    //TODO: create view for editing a sleep
+    schedule.save();
   }
 
   @override
@@ -52,12 +49,14 @@ class _UpcomingState extends State<Upcoming> {
       Padding(
           padding: EdgeInsets.symmetric(horizontal: 10),
           child: Column(children: [
-            ...schedule.sleepCycles.map((sleep) => UpcomingSleep(
+            ...schedule.sleepCycles
+              .where((sleep) => sleep.start > TimeOfDay.now().hour * 60 + TimeOfDay.now().minute)
+              .map((sleep) => UpcomingSleep(
                   key: Key(sleep.hashCode.toString()),
                   sleep: sleep,
                   onDelete: onDelete,
                   onEdit: onEdit,
-                ))
+              ))
           ]))
     ]);
   }
