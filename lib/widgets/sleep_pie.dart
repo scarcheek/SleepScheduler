@@ -62,7 +62,7 @@ class _SleepPieState extends State<SleepPie> {
         // add the awake time between the current and the previous sleep
         pieSectors.add(PieChartSectionData(
           value: sleep.start - accSectorTime,
-          color: Color(0xFF4949B1),
+          color: Theme.of(context).colorScheme.secondary,
           radius: 80,
           showTitle: false,
         ));
@@ -71,7 +71,7 @@ class _SleepPieState extends State<SleepPie> {
       // add the sleep
       pieSectors.add(PieChartSectionData(
         value: sleep.duration,
-        color: Color(0xFF3F348B),
+        color: Theme.of(context).colorScheme.secondaryVariant,
         radius: 80,
         showTitle: false,
       ));
@@ -85,7 +85,7 @@ class _SleepPieState extends State<SleepPie> {
       // add the awake time between the last and the first sleep
       pieSectors.add(PieChartSectionData(
         value: 24 * 60 /* minutes */ - accSectorTime + firstSleepStart,
-        color: Color(0xFF4949B1),
+        color: Theme.of(context).colorScheme.secondary,
         radius: 80,
         showTitle: false,
       ));
@@ -99,13 +99,22 @@ class _SleepPieState extends State<SleepPie> {
     rotation -= (TimeOfDay.now().hour * 60 + TimeOfDay.now().minute) * 2 * pi / 1440;
 
     return Column(children: [
-      Text(
-        '${currentTime.hour.toString().padLeft(2, '0')}:${currentTime.minute.toString().padLeft(2, '0')}',
-        style: TextStyle(color: Color(0xFF4949B1), fontSize: 20),
-      ),
-      Icon(
-        Icons.arrow_drop_down,
-        color: Color(0xFF4949B1),
+      Stack(
+        alignment: Alignment.topCenter,
+        children: [
+          Text(
+            '${currentTime.hour.toString().padLeft(2, '0')}:${currentTime.minute.toString().padLeft(2, '0')}',
+            style: Theme.of(context).textTheme.headline3,
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: Theme.of(context).textTheme.headline3!.fontSize! * 0.7),
+            child: Icon(
+              Icons.arrow_drop_down,
+              size: 28,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+          ),
+        ],
       ),
       Container(
         height: 240,

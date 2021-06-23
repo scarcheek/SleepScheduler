@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sleepscheduler/data/schedule.dart';
 import 'package:sleepscheduler/data/sharedpref.dart';
@@ -15,26 +16,48 @@ class App extends StatelessWidget {
       title: 'Flutter Sleep Scheduler',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Color(0xFF2F1354),
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: Color(0xff201f47),
+        colorScheme: ColorScheme(
+          primary: Colors.green[300]!, 
+          primaryVariant: Colors.green[600]!, 
+          secondary: Colors.indigo[600]!, 
+          secondaryVariant: Colors.deepPurple[800]!, 
+          surface: Color(0xff201f47), 
+          background: Color(0xff201f47), 
+          error: Colors.deepOrange[900]!, 
+          onPrimary: Colors.blueGrey[700]!, 
+          onSecondary: Colors.deepPurple[400]!, 
+          onSurface: Colors.indigo[400]!, 
+          onBackground: Colors.indigo[400]!, 
+          onError: Colors.indigo[50]!, 
+          brightness: Brightness.dark
+        ),
         textTheme: Theme.of(context).textTheme.apply(
-            bodyColor: Color(0xFF7A7AD3), displayColor: Color(0xFF7A7AD3)),
+          fontFamily: GoogleFonts.nunito().fontFamily,
+          displayColor: Colors.indigo[300],
+          bodyColor: Colors.indigo, 
+        ).merge(TextTheme(
+          headline1: TextStyle(
+            fontSize: 32,
+            letterSpacing: 0.5
+          ),
+          headline3: GoogleFonts.montserrat(
+            fontSize: 24,
+            color: Colors.green[300],
+          ),
+          headline4: GoogleFonts.montserrat(
+            fontSize: 21,
+            color: Colors.deepPurple[400],
+            fontWeight: FontWeight.w300,
+          )
+        )),
         iconTheme: IconThemeData(
-          color: Color(0xFF7A7AD3),
+          color: Colors.green[300],
         ),
         timePickerTheme: TimePickerThemeData(
-            backgroundColor: Color(0xFF404082),
-            dialHandColor: Color(0xFF3B3BCD),
-            dayPeriodColor: Color(0xFF7A7AD3),
-            hourMinuteColor: Color(0xFF7A7AD3),
-            dayPeriodTextColor: Colors.black,
-            hourMinuteTextColor: Colors.black,
-            dialBackgroundColor: Color(0xFF7A7AD3),
-            dayPeriodBorderSide: BorderSide(
-              width: 0,
-              color: Color(0xFF404082),
-            ),
-            helpTextStyle: TextStyle(color: Color(0xFF7A7AD3))),
+          helpTextStyle: TextStyle(color: Colors.indigo[300])
+        ),
       ),
       home: MyHomePage(),
     );
