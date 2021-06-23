@@ -33,7 +33,9 @@ class _HomeState extends State<Home> {
       },
     );
 
-    if (duration == null) return /* action canceled */;
+    //TODO: moch a rückmeldung oder so
+    if (duration == null || duration.hour * 60 + duration.minute <= 0)
+      return /* action canceled */;
 
     schedule.add(Sleep(startTime, duration));
 
