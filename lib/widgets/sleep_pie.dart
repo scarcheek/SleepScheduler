@@ -62,7 +62,7 @@ class _SleepPieState extends State<SleepPie> {
         pieSectors.add(PieChartSectionData(
           value: sleep.start - accSectorTime,
           color: Theme.of(context).colorScheme.secondary,
-          radius: 80,
+          radius: 60,
           showTitle: false,
         ));
       }
@@ -78,14 +78,15 @@ class _SleepPieState extends State<SleepPie> {
       accSectorTime = sleep.start + sleep.duration;
     }
 
-    var firstSleepStart = (_schedule.sleepCycles.length > 0) ? _schedule.sleepCycles[0].start : 0;
+    var firstSleepStart =
+        (_schedule.sleepCycles.length > 0) ? _schedule.sleepCycles[0].start : 0;
 
     if (accSectorTime < 24 * 60 /* minutes */ || firstSleepStart != 0) {
       // add the awake time between the last and the first sleep
       pieSectors.add(PieChartSectionData(
         value: 24 * 60 /* minutes */ - accSectorTime + firstSleepStart,
         color: Theme.of(context).colorScheme.secondary,
-        radius: 80,
+        radius: 60,
         showTitle: false,
       ));
 
@@ -95,7 +96,11 @@ class _SleepPieState extends State<SleepPie> {
     rotation = 270; // rotates the pie to have 00:00 at the top
     rotation += firstSleepRotationOffset % 360;
     // rotate to the current time
-    rotation = (360 + rotation - (TimeOfDay.now().hour * 60 + TimeOfDay.now().minute) * rotationPerMin) % 360;
+    rotation = (360 +
+            rotation -
+            (TimeOfDay.now().hour * 60 + TimeOfDay.now().minute) *
+                rotationPerMin) %
+        360;
 
     return Column(children: [
       Stack(
@@ -106,7 +111,8 @@ class _SleepPieState extends State<SleepPie> {
             style: Theme.of(context).textTheme.headline3,
           ),
           Padding(
-            padding: EdgeInsets.only(top: Theme.of(context).textTheme.headline3!.fontSize! * 0.75),
+            padding: EdgeInsets.only(
+                top: Theme.of(context).textTheme.headline3!.fontSize! * 0.75),
             child: Icon(
               Icons.arrow_drop_down,
               size: 28,
