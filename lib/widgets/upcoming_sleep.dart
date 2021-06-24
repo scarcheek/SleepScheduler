@@ -60,11 +60,11 @@ class _UpcomingSleepState extends State<UpcomingSleep> {
   Widget build(BuildContext context) {
     return ListTile(
       focusNode: focusNode,
+      autofocus: true,
       onTap: () => focusNode.requestFocus(),
       title: Text(
-        '${sleep.startTime.toString().split(RegExp('[()]'))[1]} ${sleep.name} for $durationText',
-        overflow: TextOverflow.clip,
-      ),
+          '${sleep.startTime.toString().split(RegExp('[()]'))[1]} for $durationText'),
+      subtitle: Text(sleep.name),
       leading: Icon(
         Icons.hotel,
         color: Theme.of(context).textTheme.headline4!.color,
