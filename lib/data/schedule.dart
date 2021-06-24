@@ -9,6 +9,7 @@ import 'sharedpref.dart';
 
 class Schedule extends ChangeNotifier {
   List<Sleep> _sleepCycles = [];
+  Sleep? focusedSleep;
 
   Schedule();
 
@@ -34,6 +35,11 @@ class Schedule extends ChangeNotifier {
 
   void save() {
     SharedPref().save('schedule', this);
+    notifyListeners();
+  }
+
+  void focus(Sleep? sleep) {
+    focusedSleep = sleep;
     notifyListeners();
   }
 

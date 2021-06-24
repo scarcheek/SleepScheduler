@@ -5,6 +5,7 @@ import 'package:sleepscheduler/data/sleep.dart';
 import 'package:sleepscheduler/widgets/date_time_header.dart';
 import 'package:sleepscheduler/widgets/sleep_pie.dart';
 import 'package:sleepscheduler/widgets/snackbar_handler.dart';
+import 'package:sleepscheduler/widgets/text_dialog.dart';
 import 'package:sleepscheduler/widgets/upcoming.dart';
 
 class Home extends StatefulWidget {
@@ -13,7 +14,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  void _createNewSector(BuildContext context, Schedule schedule) async {
+  void addSleep(BuildContext context, Schedule schedule) async {
     TimeOfDay? startTime = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now().replacing(minute: 30),
@@ -42,8 +43,12 @@ class _HomeState extends State<Home> {
           'Scheduling a sleep with a duration of 0 doesn\'t make any sense.',
           SnackbarType.error);
 
+    String? name = await TextDialog.show(context, 'Enter Name'.toUpperCase(), 'Sleep');
+
+    if (name == null) return /* action canceled */;
+
     // Checks whether the new sleep overlaps with any preexisting sleeps
-    Sleep sleep = Sleep(startTime, duration);
+    Sleep sleep = Sleep(startTime, duration, name);
     if (schedule.sleepCycles.any((element) {
       if (element.start == sleep.start) return true;
 
@@ -71,7 +76,7 @@ class _HomeState extends State<Home> {
           Row(mainAxisAlignment: MainAxisAlignment.end, children: [
             IconButton(
                 onPressed: () {
-                  _createNewSector(context, schedule);
+                  addSleep(context, schedule);
                 },
                 icon: Icon(Icons.add),
                 splashRadius: 20,

@@ -25,9 +25,9 @@ class App extends StatelessWidget {
             secondaryVariant: Colors.deepPurple[800]!,
             surface: Color(0xff201f47),
             background: Color(0xff201f47),
-            error: Color(0xFF400000),
+            error: Colors.red[400]!,
             onPrimary: Colors.blueGrey[700]!,
-            onSecondary: Colors.deepPurple[300]!,
+            onSecondary: Color(0xFF323367),
             onSurface: Colors.indigo[400]!,
             onBackground: Colors.indigo[400]!,
             onError: Colors.red[50]!,
@@ -88,17 +88,19 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Container(
-        margin: EdgeInsets.only(top: 40, right: 20, left: 20),
-        child: Center(
-          child: Column(
-            children: <Widget>[
-              ChangeNotifierProvider(
-                create: (context) => _schedule,
-                child: Home(),
-                lazy: true,
-              )
-            ],
+      body: SafeArea(
+        child: Container(
+          margin: EdgeInsets.only(top: 20, right: 20, left: 20),
+          child: Center(
+            child: Column(
+              children: <Widget>[
+                ChangeNotifierProvider(
+                  create: (context) => _schedule,
+                  child: Home(),
+                  lazy: true,
+                )
+              ],
+            ),
           ),
         ),
       ),

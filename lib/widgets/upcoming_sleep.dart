@@ -1,41 +1,46 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:sleepscheduler/data/schedule.dart';
 import 'package:sleepscheduler/data/sleep.dart';
 import 'package:sleepscheduler/widgets/text_dialog.dart';
 
+import 'snackbar_handler.dart';
+
 class UpcomingSleep extends StatefulWidget {
   final Sleep sleep;
-  final Function onDelete;
-  final Function onEdit;
+  final Schedule schedule;
 
   UpcomingSleep(
       {Key? key,
       required this.sleep,
-      required this.onDelete,
-      required this.onEdit})
+      required this.schedule})
       : super(key: key);
 
   @override
   _UpcomingSleepState createState() =>
-      _UpcomingSleepState(sleep, onDelete, onEdit);
+      _UpcomingSleepState(sleep, schedule);
 }
 
 class _UpcomingSleepState extends State<UpcomingSleep> {
   late Sleep sleep;
-  late Function onDelete, onEdit;
+  late Schedule schedule;
   String durationText = '';
 
-  _UpcomingSleepState(this.sleep, this.onDelete, this.onEdit);
+  _UpcomingSleepState(this.sleep, this.schedule);
 
-  void onDeletePressed() {
-    onDelete(sleep);
+  void onDelete() {
+    SnackbarHandler().showSnackbar(
+        context, 'Deleting ${sleep.startTime.toString()}', SnackbarType.info);
+    schedule.remove(sleep);
   }
 
-  Future<void> onEditPressed() async {
+  Future<void> onEdit() async {
     String? name = await TextDialog.show(context, 'Enter Name'.toUpperCase(), sleep.name);
     if (name == null) return /* action canceled */;
     
     sleep.name = name;
-    onEdit(sleep);
+    schedule.save();
   }
 
   @override
@@ -49,7 +54,8 @@ class _UpcomingSleepState extends State<UpcomingSleep> {
   @override
   Widget build(BuildContext context) {
     return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-      Row(children: [
+      Row(
+        children: [
         Icon(
           Icons.hotel,
           color: Theme.of(context).textTheme.headline4!.color,
@@ -62,13 +68,13 @@ class _UpcomingSleepState extends State<UpcomingSleep> {
       ]),
       Row(children: [
         IconButton(
-          onPressed: onDeletePressed,
+          onPressed: onDelete,
           icon: Icon(Icons.delete),
           splashRadius: 20,
           color: Theme.of(context).colorScheme.primary,
         ),
         IconButton(
-          onPressed: onEditPressed,
+          onPressed: onEdit,
           icon: Icon(Icons.edit),
           splashRadius: 20,
           color: Theme.of(context).colorScheme.primary,

@@ -62,7 +62,7 @@ class _SleepPieState extends State<SleepPie> {
         pieSectors.add(PieChartSectionData(
           value: sleep.start - accSectorTime,
           color: Theme.of(context).colorScheme.secondary,
-          radius: 60,
+          radius: 70,
           showTitle: false,
         ));
       }
@@ -86,7 +86,7 @@ class _SleepPieState extends State<SleepPie> {
       pieSectors.add(PieChartSectionData(
         value: 24 * 60 /* minutes */ - accSectorTime + firstSleepStart,
         color: Theme.of(context).colorScheme.secondary,
-        radius: 60,
+        radius: 70,
         showTitle: false,
       ));
 

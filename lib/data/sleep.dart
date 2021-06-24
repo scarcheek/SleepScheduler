@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 
 class Sleep {
@@ -7,11 +6,11 @@ class Sleep {
   late TimeOfDay startTime;
   late String name;
 
-  Sleep(TimeOfDay start, TimeOfDay duration) {
+  Sleep(TimeOfDay start, TimeOfDay duration, String name) {
     this.start = (start.hour * 60 + start.minute).toDouble();
     this.duration = (duration.hour * 60 + duration.minute).toDouble();
     this.startTime = start;
-    this.name = 'Sleep';
+    this.name = name;
   }
 
   Sleep.fromJson(Map<String, dynamic> json)

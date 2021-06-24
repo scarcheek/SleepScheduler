@@ -29,7 +29,7 @@ class SnackbarHandler {
       ),
       behavior: SnackBarBehavior.floating,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(4),
       ),
       backgroundColor: Theme.of(context).colorScheme.onSecondary,
     ));
