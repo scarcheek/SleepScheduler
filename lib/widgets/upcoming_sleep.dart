@@ -73,6 +73,7 @@ class _UpcomingSleepState extends State<UpcomingSleep> {
         Icons.hotel,
         color: Theme.of(context).textTheme.headline4!.color,
       ),
+      contentPadding: EdgeInsets.symmetric(horizontal: 8),
       horizontalTitleGap: 0,
       enableFeedback: false,
       focusColor: Theme.of(context).scaffoldBackgroundColor,
