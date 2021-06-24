@@ -49,7 +49,7 @@ class _UpcomingSleepState extends State<UpcomingSleep> {
       durationText = '${(sleep.duration / 60).floor()}h';
     if (sleep.duration % 60 > 0)
       durationText +=
-          '${durationText.length > 0 ? ' ' : ''}${sleep.duration % 60}min';
+          '${durationText.length > 0 ? ' ' : ''}${(sleep.duration % 60).ceil()}min';
     focusNode = FocusNode()
       ..addListener(() {
         print('focus');
@@ -70,6 +70,7 @@ class _UpcomingSleepState extends State<UpcomingSleep> {
         Icons.hotel,
         color: Theme.of(context).textTheme.headline4!.color,
       ),
+      horizontalTitleGap: 0,
       enableFeedback: false,
       focusColor: Theme.of(context).scaffoldBackgroundColor,
       trailing: (focusNode.hasFocus)
