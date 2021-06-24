@@ -5,6 +5,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:sleepscheduler/data/schedule.dart';
 import 'package:sleepscheduler/data/sleep.dart';
+import 'package:sleepscheduler/widgets/day_night_pie.dart';
 import 'package:sleepscheduler/widgets/snackbar_handler.dart';
 import 'package:sleepscheduler/widgets/text_dialog.dart';
 
@@ -31,9 +32,7 @@ class _SleepPieState extends State<SleepPie> {
   }
 
   void handleTurn(Timer t) {
-    setState(() {
-      rotation = (360 + rotation - rotationPerMin) % 360;
-    });
+    setState(() {});
   }
 
   TimeOfDay currentTime = TimeOfDay.now();
@@ -43,7 +42,7 @@ class _SleepPieState extends State<SleepPie> {
   @override
   void initState() {
     super.initState();
-    turnTimer = Timer.periodic(Duration(minutes: 1), handleTurn);
+    turnTimer = Timer.periodic(Duration(seconds: 1), handleTurn);
     timeTimer = Timer.periodic(Duration(seconds: 1), handleTimeChange);
   }
 
@@ -150,7 +149,6 @@ class _SleepPieState extends State<SleepPie> {
     }
 
     rotation = 270; // rotates the pie to have 00:00 at the top
-    rotation += firstSleepRotationOffset % 360;
     // rotate to the current time
     rotation = (360 +
             rotation -
@@ -185,11 +183,14 @@ class _SleepPieState extends State<SleepPie> {
               borderData: FlBorderData(
                 show: false,
               ),
-              centerSpaceRadius: 30,
+              centerSpaceRadius: 37,
               sections: pieSectors,
               sectionsSpace: 2,
-              startDegreeOffset: rotation,
+              startDegreeOffset: (rotation + firstSleepRotationOffset) % 360,
             )),
+          ),
+          DayNightPie(
+            rotation: rotation,
           ),
           IconButton(
               onPressed: () {

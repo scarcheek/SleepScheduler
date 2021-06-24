@@ -93,6 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
           margin: EdgeInsets.only(top: 20, right: 20, left: 20),
           child: Center(
             child: Column(
+              mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 ChangeNotifierProvider(
                   create: (context) => _schedule,
