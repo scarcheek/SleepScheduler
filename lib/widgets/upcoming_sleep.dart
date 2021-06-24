@@ -63,8 +63,11 @@ class _UpcomingSleepState extends State<UpcomingSleep> {
       focusNode: focusNode,
       autofocus: true,
       onTap: () => focusNode.requestFocus(),
-      title: Text(
-          '${sleep.startTime.toString().split(RegExp('[()]'))[1]} for $durationText'),
+      title: SingleChildScrollView(
+        child: Text(
+            '${sleep.startTime.toString().split(RegExp('[()]'))[1]} for $durationText'),
+        scrollDirection: Axis.horizontal,
+      ),
       subtitle: Text(sleep.name),
       leading: Icon(
         Icons.hotel,
