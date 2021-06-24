@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -81,7 +80,7 @@ class _SleepPieState extends State<SleepPie> {
     String? name =
         await TextDialog.show(context, 'Enter Name'.toUpperCase(), 'Sleep');
 
-    if (name == null) return /* action canceled */;
+    if (name == null) name = 'Sleep'; /* action canceled */
 
     // Checks whether the new sleep overlaps with any preexisting sleeps
     Sleep sleep = Sleep(startTime, duration, name);

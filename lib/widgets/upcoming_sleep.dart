@@ -45,7 +45,8 @@ class _UpcomingSleepState extends State<UpcomingSleep> {
   void initState() {
     super.initState();
 
-    if (sleep.duration > 60) durationText = '${(sleep.duration / 60).floor()}h';
+    if (sleep.duration >= 60)
+      durationText = '${(sleep.duration / 60).floor()}h';
     if (sleep.duration % 60 > 0)
       durationText +=
           '${durationText.length > 0 ? ' ' : ''}${sleep.duration % 60}min';

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sleepscheduler/data/schedule.dart';
-import 'package:sleepscheduler/data/sleep.dart';
 import 'package:sleepscheduler/widgets/date_time_header.dart';
 import 'package:sleepscheduler/widgets/sleep_pie.dart';
-import 'package:sleepscheduler/widgets/snackbar_handler.dart';
-import 'package:sleepscheduler/widgets/text_dialog.dart';
 import 'package:sleepscheduler/widgets/upcoming.dart';
 
 class Home extends StatefulWidget {

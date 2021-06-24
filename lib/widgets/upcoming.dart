@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sleepscheduler/data/schedule.dart';
-import 'package:sleepscheduler/data/sleep.dart';
 
 import 'upcoming_sleep.dart';
 
