@@ -39,21 +39,25 @@ class _UpcomingState extends State<Upcoming> {
       ),
       Padding(
         padding: EdgeInsets.symmetric(horizontal: 10),
-        child: Column(children: <Widget>[
+        child: ListView(shrinkWrap: true, children: <Widget>[
           ...schedule.sleepCycles
-            .where((sleep) => sleep.start > TimeOfDay.now().hour * 60 + TimeOfDay.now().minute)
-            .map((sleep) => UpcomingSleep(
-              key: Key(sleep.hashCode.toString()),
-              sleep: sleep,
-              schedule: schedule,
-            )),
+              .where((sleep) =>
+                  sleep.start >
+                  TimeOfDay.now().hour * 60 + TimeOfDay.now().minute)
+              .map((sleep) => UpcomingSleep(
+                    key: Key(sleep.hashCode.toString()),
+                    sleep: sleep,
+                    schedule: schedule,
+                  )),
           ...schedule.sleepCycles
-            .where((sleep) => sleep.start <= TimeOfDay.now().hour * 60 + TimeOfDay.now().minute)
-            .map((sleep) => UpcomingSleep(
-              key: Key(sleep.hashCode.toString()),
-              sleep: sleep,
-              schedule: schedule,
-            )),
+              .where((sleep) =>
+                  sleep.start <=
+                  TimeOfDay.now().hour * 60 + TimeOfDay.now().minute)
+              .map((sleep) => UpcomingSleep(
+                    key: Key(sleep.hashCode.toString()),
+                    sleep: sleep,
+                    schedule: schedule,
+                  )),
         ]),
       ),
     ]);
