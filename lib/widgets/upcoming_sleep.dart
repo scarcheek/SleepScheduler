@@ -52,7 +52,6 @@ class _UpcomingSleepState extends State<UpcomingSleep> {
           '${durationText.length > 0 ? ' ' : ''}${(sleep.duration % 60).ceil()}min';
     focusNode = FocusNode()
       ..addListener(() {
-        print('focus');
         setState(() {}); // Rebuild.
       });
   }

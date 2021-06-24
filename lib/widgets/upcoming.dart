@@ -18,8 +18,6 @@ class _UpcomingState extends State<Upcoming> {
 
   @override
   Widget build(BuildContext context) {
-    print('focused sleep: ${schedule.focusedSleep?.startTime}');
-
     return Column(children: [
       Row(mainAxisAlignment: MainAxisAlignment.start, children: [
         Padding(
