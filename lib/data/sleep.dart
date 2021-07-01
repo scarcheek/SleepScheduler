@@ -5,6 +5,7 @@ class Sleep {
   late double duration;
   late TimeOfDay startTime;
   late String name;
+  late int notifId;
 
   Sleep(TimeOfDay start, TimeOfDay duration, String name) {
     this.start = (start.hour * 60 + start.minute).toDouble();
@@ -18,9 +19,10 @@ class Sleep {
         duration = json['duration'],
         startTime = TimeOfDay(
             hour: (json['start'] / 60).floor(),
-            minute: (json['start'].toInt() % 60)
-        ), 
-        name = json['name'];
+            minute: (json['start'].toInt() % 60)),
+        name = json['name'],
+        notifId = json['notifid'];
 
-  Map<String, dynamic> toJson() => {'start': start, 'duration': duration, 'name': name};
+  Map<String, dynamic> toJson() =>
+      {'start': start, 'duration': duration, 'name': name, 'notifid': notifId};
 }

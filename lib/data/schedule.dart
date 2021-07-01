@@ -18,6 +18,7 @@ import 'sharedpref.dart';
 
 class Schedule extends ChangeNotifier {
   List<Sleep> _sleepCycles = [];
+  int currNotificationId = 0;
 
   Schedule();
 
@@ -53,22 +54,24 @@ class Schedule extends ChangeNotifier {
 
     tz.initializeTimeZones();
     tz.setLocalLocation(tz.getLocation("Europe/Vienna"));
+    currNotificationId++;
+    sleep.notifId = currNotificationId;
 
-//TODO(rami-a): Tua des mit da duration und den restlichen scheiss bitte danke :-)
+    //TODO(rami-a): Tua des mit da duration und den restlichen scheiss bitte danke :-)
     print("Doing da notification shit");
     flutterLocalNotificationsPlugin
         .zonedSchedule(
-            Random().nextInt(6942069),
+            currNotificationId,
             sleep.name,
             'Time to ${sleep.name}!\nDuration: ${sleep.duration}',
-            tz.TZDateTime.now(tz.local).add(Duration(seconds: 10)),
+            tz.TZDateTime.now(tz.local).add(duration),
             platformChannelSpecifics,
             payload: 'i wars, ${sleep.name}',
             androidAllowWhileIdle: true,
             uiLocalNotificationDateInterpretation:
                 UILocalNotificationDateInterpretation.absoluteTime)
         .whenComplete(() => flutterLocalNotificationsPlugin.periodicallyShow(
-            Random().nextInt(6942069),
+            -currNotificationId,
             sleep.name,
             'Time to ${sleep.name}!\nDuration: ${sleep.duration}',
             RepeatInterval.everyMinute,
@@ -88,6 +91,10 @@ class Schedule extends ChangeNotifier {
 
   void remove(Sleep sleep) {
     _sleepCycles.remove(sleep);
+
+    flutterLocalNotificationsPlugin.cancel(sleep.notifId);
+    flutterLocalNotificationsPlugin.cancel(-sleep.notifId);
+
     save();
   }
 
@@ -99,7 +106,11 @@ class Schedule extends ChangeNotifier {
   Schedule.fromJson(Map<String, dynamic> json)
       : _sleepCycles = (jsonDecode(json['sleepcycles']) as List)
             .map((e) => Sleep.fromJson(e))
-            .toList();
+            .toList(),
+        currNotificationId = jsonDecode(json['currnotificationid']);
 
-  Map<String, dynamic> toJson() => {'sleepcycles': jsonEncode(_sleepCycles)};
+  Map<String, dynamic> toJson() => {
+        'sleepcycles': jsonEncode(_sleepCycles),
+        'currnotificationid': currNotificationId
+      };
 }
