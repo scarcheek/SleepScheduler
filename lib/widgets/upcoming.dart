@@ -32,26 +32,6 @@ class _UpcomingState extends State<Upcoming> {
             style: Theme.of(context).textTheme.headline2,
           ),
         ),
-        IconButton(onPressed: () async {
-          const AndroidNotificationDetails androidPlatformChannelSpecifics =
-            AndroidNotificationDetails(
-                'your channel id', 'your channel name', 'your channel description',
-                importance: Importance.max,
-                priority: Priority.high,
-                category: 'alarm',
-                icon: 'app_icon',
-                fullScreenIntent: true,
-                showWhen: false);
-
-          const NotificationDetails platformChannelSpecifics =
-              NotificationDetails(android: androidPlatformChannelSpecifics);
-
-          Timer(Duration(seconds: 5), () {
-            flutterLocalNotificationsPlugin.show(
-              0, 'plain title', 'plain body', platformChannelSpecifics,
-              payload: 'item x');
-          });
-        }, icon: Icon(Icons.access_alarm))
       ]),
       Divider(
         endIndent: 10,
