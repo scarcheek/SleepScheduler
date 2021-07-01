@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:isolate';
 import 'dart:math';
 
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
@@ -8,6 +9,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:sleepscheduler/data/sleep.dart';
+
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 import '../main.dart';
 import 'sharedpref.dart';
@@ -25,43 +29,57 @@ class Schedule extends ChangeNotifier {
     _sleepCycles.sort((a, b) => (a.start - b.start).toInt());
 
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
-    AndroidNotificationDetails(
-        'Fcking Sleep Reminders', 'Fcking Sleep Reminders', 'Fcking Sleep Reminders',
-        importance: Importance.max,
-        priority: Priority.high,
-        category: 'alarm',
-        icon: 'app_icon',
-        fullScreenIntent: true,
-        showWhen: false);
+        AndroidNotificationDetails('Fcking Sleep Reminders',
+            'Fcking Sleep Reminders', 'Fcking Sleep Reminders',
+            importance: Importance.max,
+            priority: Priority.high,
+            category: 'alarm',
+            icon: 'app_icon',
+            // fullScreenIntent: true,
+            showWhen: false);
 
     const NotificationDetails platformChannelSpecifics =
-      NotificationDetails(android: androidPlatformChannelSpecifics);
+        NotificationDetails(android: androidPlatformChannelSpecifics);
 
+    // Isolate.spawn((message) async {
     var minsPerDay = 1440;
     var currMinOfDay = TimeOfDay.now().hour * 60 + TimeOfDay.now().minute;
     var notifyTime = -30; /* notify 30min before sleep */
 
-    var duration = Duration(minutes: ((sleep.start + minsPerDay - currMinOfDay + notifyTime) % minsPerDay).toInt());
-    Timer(duration, () {
-      flutterLocalNotificationsPlugin.show(
-        Random().nextInt(6942069), sleep.name, 'Time to ${sleep.name}!\nDuration: ${sleep.duration}', platformChannelSpecifics,
-        payload: 'i wars, ${sleep.name}');
+    var duration = Duration(
+        minutes: ((sleep.start + minsPerDay - currMinOfDay + notifyTime) %
+                minsPerDay)
+            .toInt());
 
-      Timer.periodic(Duration(days: 1), (timer) {
-        flutterLocalNotificationsPlugin.show(
-        Random().nextInt(6942069), sleep.name, 'Time to ${sleep.name}!\nDuration: ${sleep.duration}', platformChannelSpecifics,
-        payload: 'i wars wieder, ${sleep.name}');
-      });
-    });
+    tz.initializeTimeZones();
+    tz.setLocalLocation(tz.getLocation("Europe/Vienna"));
 
-    
+//TODO(rami-a): Tua des mit da duration und den restlichen scheiss bitte danke :-)
+    print("Doing da notification shit");
+    flutterLocalNotificationsPlugin
+        .zonedSchedule(
+            Random().nextInt(6942069),
+            sleep.name,
+            'Time to ${sleep.name}!\nDuration: ${sleep.duration}',
+            tz.TZDateTime.now(tz.local).add(Duration(seconds: 10)),
+            platformChannelSpecifics,
+            payload: 'i wars, ${sleep.name}',
+            androidAllowWhileIdle: true,
+            uiLocalNotificationDateInterpretation:
+                UILocalNotificationDateInterpretation.absoluteTime)
+        .whenComplete(() => flutterLocalNotificationsPlugin.periodicallyShow(
+            Random().nextInt(6942069),
+            sleep.name,
+            'Time to ${sleep.name}!\nDuration: ${sleep.duration}',
+            RepeatInterval.everyMinute,
+            platformChannelSpecifics,
+            payload: 'i wars, ${sleep.name}'));
 
+    print("FERTIIIIG");
     save();
   }
 
-  void notify(Sleep sleep, platformChannelSpecifics) {
-   
-  }
+  void notify(Sleep sleep, platformChannelSpecifics) {}
 
   void addAll(List<Sleep> sleepCycles) {
     _sleepCycles.addAll(sleepCycles);
