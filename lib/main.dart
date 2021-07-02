@@ -1,4 +1,3 @@
-import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,7 +11,6 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await AndroidAlarmManager.initialize();
 
   // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
   const AndroidInitializationSettings initializationSettingsAndroid =

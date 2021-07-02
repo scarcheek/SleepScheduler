@@ -1,10 +1,6 @@
-import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
-import 'dart:isolate';
-import 'dart:math';
 
-import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -57,26 +53,27 @@ class Schedule extends ChangeNotifier {
     currNotificationId++;
     sleep.notifId = currNotificationId;
 
-    //TODO(rami-a): Tua des mit da duration und den restlichen scheiss bitte danke :-)
+    var durationText = '';
+
+    if (sleep.duration >= 60)
+      durationText = '${(sleep.duration / 60).floor()}h';
+    if (sleep.duration % 60 > 0)
+      durationText +=
+          '${durationText.length > 0 ? ' ' : ''}${(sleep.duration % 60).ceil()}min';
+
     print("Doing da notification shit");
     flutterLocalNotificationsPlugin
         .zonedSchedule(
             currNotificationId,
             sleep.name,
-            'Time to ${sleep.name}!\nDuration: ${sleep.duration}',
+            'Time to ${sleep.name}!\nDuration: $durationText.',
             tz.TZDateTime.now(tz.local).add(duration),
             platformChannelSpecifics,
+            matchDateTimeComponents: DateTimeComponents.time,
             payload: 'i wars, ${sleep.name}',
             androidAllowWhileIdle: true,
             uiLocalNotificationDateInterpretation:
-                UILocalNotificationDateInterpretation.absoluteTime)
-        .whenComplete(() => flutterLocalNotificationsPlugin.periodicallyShow(
-            -currNotificationId,
-            sleep.name,
-            'Time to ${sleep.name}!\nDuration: ${sleep.duration}',
-            RepeatInterval.everyMinute,
-            platformChannelSpecifics,
-            payload: 'i wars, ${sleep.name}'));
+                UILocalNotificationDateInterpretation.absoluteTime);
 
     print("FERTIIIIG");
     save();
@@ -91,9 +88,7 @@ class Schedule extends ChangeNotifier {
 
   void remove(Sleep sleep) {
     _sleepCycles.remove(sleep);
-
     flutterLocalNotificationsPlugin.cancel(sleep.notifId);
-    flutterLocalNotificationsPlugin.cancel(-sleep.notifId);
 
     save();
   }
@@ -107,7 +102,7 @@ class Schedule extends ChangeNotifier {
       : _sleepCycles = (jsonDecode(json['sleepcycles']) as List)
             .map((e) => Sleep.fromJson(e))
             .toList(),
-        currNotificationId = jsonDecode(json['currnotificationid']);
+        currNotificationId = json['currnotificationid'];
 
   Map<String, dynamic> toJson() => {
         'sleepcycles': jsonEncode(_sleepCycles),
