@@ -42,10 +42,11 @@ class _DateTimeHeaderState extends State<DateTimeHeader> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Transform.rotate(
-              angle: -pi / 2,
+            RotatedBox(
+              quarterTurns: -1,
               child: Text(_currDate.day.toString(),
-                  style: Theme.of(context).textTheme.headline4),
+                style: Theme.of(context).textTheme.headline4
+              ),
             ),
             VerticalDivider(
               color: Theme.of(context).colorScheme.onPrimary,
