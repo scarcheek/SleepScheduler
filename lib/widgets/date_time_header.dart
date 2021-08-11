@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 
@@ -37,9 +36,8 @@ class _DateTimeHeaderState extends State<DateTimeHeader> {
 
     return IntrinsicHeight(
       child: Padding(
-        padding: EdgeInsets.only(bottom: 20),
+        padding: EdgeInsets.only(top: 20, bottom: 20),
         child: Row(
-          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             RotatedBox(

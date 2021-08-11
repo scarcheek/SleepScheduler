@@ -110,21 +110,12 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: Container(
-          margin: EdgeInsets.only(top: 20, right: 20, left: 20),
-          child: Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                ChangeNotifierProvider(
-                  create: (context) => _schedule,
-                  child: Home(),
-                  lazy: true,
-                )
-              ],
-            ),
-          ),
-        ),
+        minimum: EdgeInsets.only(top: 20, right: 20, left: 20),
+        child: ChangeNotifierProvider(
+          create: (context) => _schedule,
+          child: Home(),
+          lazy: true,
+        )
       ),
     );
   }

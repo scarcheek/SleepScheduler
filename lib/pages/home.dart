@@ -14,13 +14,16 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Consumer<Schedule>(
-      builder: (context, schedule, child) => Column(
-        children: [
-          DateTimeHeader(),
-          SleepPie(schedule: schedule),
-          Upcoming(schedule: schedule),
-        ],
-      ),
+      builder: (context, schedule, child) => 
+        // SingleChildScrollView(child: 
+          Column(
+            children: [
+              DateTimeHeader(),
+              SleepPie(schedule: schedule),
+              Upcoming(schedule: schedule),
+            ],
+          ),
+        // ),      
     );
   }
 }
