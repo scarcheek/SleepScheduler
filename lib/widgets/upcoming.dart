@@ -24,20 +24,19 @@ class _UpcomingState extends State<Upcoming> {
     print(
         schedule.sleepCycles.length * 72 / MediaQuery.of(context).size.height);
 
-    double initialChildSize = min(
-        0.45,
-        (schedule.sleepCycles.length * 72) +
-            80 / MediaQuery.of(context).size.height);
+    final double minChildSize = 0.45;
+    final double initialChildSize = minChildSize;
 
-    double maxChildSize = min(
-        0.98,
+    // TODO(rami-a) idk what this mess is, schaus di an! size rerendering oda sowas hob i gehört 🤷‍♀️
+    double maxChildSize = max(minChildSize, 
+      min(0.98,
         (schedule.sleepCycles.length * 72 + 80) /
-            MediaQuery.of(context).size.height);
+            MediaQuery.of(context).size.height));
 
     return DraggableScrollableSheet(
       maxChildSize: maxChildSize,
       initialChildSize: initialChildSize,
-      minChildSize: 0.45,
+      minChildSize: minChildSize,
       builder: (context, scrollController) => SingleChildScrollView(
           controller: scrollController,
           child: Card(
